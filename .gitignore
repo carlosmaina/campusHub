@@ -1,6 +1,7 @@
 # Node modules
 node_modules/
-
+#uploads 
+uploads/
 # Logs
 npm-debug.log*
 yarn-debug.log*
