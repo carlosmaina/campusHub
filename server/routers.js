@@ -6,7 +6,7 @@ import fs from "fs";
 import pdfjsLib from "pdfjs-dist/legacy/build/pdf.js";
 import fetch from "node-fetch";
 
-const apiKey = "AIzaSyAlg-3dqBGJphXLEv39IT_GwO7XW6pgYxc";
+const apiKey = "AIzaSyBISuZntU40vGHbwWWHue-8JBd-fW7ssK8";
 const MODEL_NAME = "gemini-2.5-pro"; // use valid model
 const API_URL_2 = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${apiKey}`;
 if (!apiKey) {
