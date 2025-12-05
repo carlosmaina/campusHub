@@ -2,13 +2,12 @@ import { Router } from "express";
 import multer from "multer";
 import { resolve, join } from "path";
 import "dotenv/config";
+import { Groq } from "groq-sdk";
 import fs from "fs";
 import pdfjsLib from "pdfjs-dist/legacy/build/pdf.js";
 import fetch from "node-fetch";
 
-const apiKey = "AIzaSyBISuZntU40vGHbwWWHue-8JBd-fW7ssK8";
-const MODEL_NAME = "gemini-2.5-pro"; // use valid model
-const API_URL_2 = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:generateContent?key=${apiKey}`;
+const apiKey = process.env.API_KEY;
 if (!apiKey) {
 	throw new Error("API key Invalid");
 }
@@ -142,24 +141,38 @@ routerApp.post("/api", async (req, res) => {
 });
 routerApp.get("/summary", async (req, res) => {
 	try {
-		await fetch(API_URL_2, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				contents: [
-					{ parts: [{ text: `Summarize this content clearly${fullText}` }] },
-				],
-			}),
-		})
-			.then((data) => data.json())
-			.then((d) => {
-				if (!d.candidates) return res.json("No available tokens");
-				return res.json(d.candidates[0].content.parts[0].text);
-			});
+		const groq = new Groq({ apiKey });
+
+		const chatCompletion = await groq.chat.completions.create({
+			messages: [
+				{
+					role: "user",
+					content: `Give me a short summary of this text:\n${fullText}`,
+				},
+			],
+			model: "openai/gpt-oss-20b",
+			temperature: 1,
+			max_completion_tokens: 8192,
+			stream: true,
+		});
+
+		let fullAI = "";
+
+		// Collect full streamed output
+		for await (const chunk of chatCompletion) {
+			const piece = chunk.choices[0]?.delta?.content;
+			if (piece) fullAI += piece;
+		}
+
+		// Send final JSON response
+		res.json({
+			success: true,
+			ai: fullAI,
+		});
 	} catch (err) {
-		console.log("Error...");
+		console.error(err);
+		res.status(500).json({ success: false, error: "AI summarization failed" });
 	}
 });
+
 export default routerApp;
