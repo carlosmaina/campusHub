@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server/server.js"
+    "start": "node server/server.js",
+    "dev": "nodemon server/server.js"
   },
   "keywords": [],
   "author": "Carlos Maina",
@@ -15,13 +16,21 @@
     "@google-ai/generativelanguage": "^3.5.0",
     "@google/genai": "^1.30.0",
     "@google/generative-ai": "^0.24.1",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
-    "express": "^5.1.0",
+    "express": "^5.2.1",
+    "express-session": "^1.18.2",
     "groq-sdk": "^0.37.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongodb": "^7.0.0",
+    "mongoose": "^9.0.1",
     "multer": "^2.0.2",
     "node-fetch": "^3.3.2",
+    "nodemailer": "^7.0.12",
     "nodemon": "^3.1.11",
-    "pdfjs-dist": "^2.16.105"
+    "pdfjs-dist": "^5.4.449",
+    "uuid": "^13.0.0"
   }
 }
