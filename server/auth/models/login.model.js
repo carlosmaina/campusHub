@@ -35,7 +35,8 @@ async function login_model(req, res, nxt) {
         
         // Also create a notification in the database
         try {
-            const response = await fetch("http://localhost:8000/create-notification", {
+            const baseURL = process.env.API_BASE_URL || "http://localhost:8000";
+            const response = await fetch(`${baseURL}/create-notification`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

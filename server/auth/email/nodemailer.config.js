@@ -15,7 +15,13 @@ const transporter = nodemailer.createTransport({
     auth: {
         user: process.env.EMAIL_USER,  // Your Gmail address
         pass: process.env.EMAIL_PASSWORD,  // Your Gmail app password (not regular password)
-    }
+    },
+    connectionTimeout: 10000,  // 10 seconds
+    socketTimeout: 10000,      // 10 seconds
+    maxConnections: 5,
+    maxMessages: 100,
+    rateDelta: 1000,
+    rateLimit: 3
 });
 
 // Function to send welcome email on first login
